@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/items")
@@ -14,9 +16,6 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
-//    public ItemController(ItemService itemService) {
-//        this.itemService = itemService;
-//    }
 
     @GetMapping
     public List<Item> getAllItems() {
@@ -34,8 +33,13 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
-    public Item updateItem(@RequestBody Item item) {
+    public Item changeItem(@RequestBody Item item) {
         return itemService.updateItem(item);
+    }
+
+    @PatchMapping("/{id}")
+    public Item updateItem(@PathVariable String id, @RequestBody Map<String, Object> updates) {
+        return itemService.changePartOfItem(id, updates);
     }
 
     @DeleteMapping("/{id}")
